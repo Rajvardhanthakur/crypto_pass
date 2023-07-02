@@ -7,6 +7,7 @@ contract PassToken is ERC721 {
 
   address public owner;
   uint256 public totalOccasions;
+  uint256 public totalSupply;
 
   struct Occasion {
     uint256 id;
@@ -20,6 +21,9 @@ contract PassToken is ERC721 {
   }
 
   mapping(uint256 => Occasion) occasions;
+  mapping(uint256 => mapping(uint256 => address)) public seatTaken;
+  mapping(uint256 => mapping(address => bool)) public hasBought;
+  mapping(uint256 => uint256[]) seatsTaken;
 
   modifier onlyOwner() {
     require(msg.sender == owner);
@@ -28,6 +32,25 @@ contract PassToken is ERC721 {
 
   constructor( string memory _name, string memory _symbol) ERC721(_name, _symbol) {
     owner = msg.sender;
+  }
+
+  function mint(uint256 _id, uint256 _seat) public payable {
+    require(_id != 0 && _id <= totalOccasions);
+    require(msg.value >= occasions[_id].cost);
+
+    require(seatTaken[_id][_seat] == address(0));
+    require(_seat <= occasions[_id].maxTickets);
+
+    occasions[_id].tickets -= 1;
+
+    hasBought[_id][msg.sender] = true;
+    seatTaken[_id][_seat] = msg.sender;
+
+    seatsTaken[_id].push(_seat);
+
+    totalSupply++;
+    
+    _safeMint(msg.sender, totalSupply);
   }
   
   function list(
@@ -53,6 +76,15 @@ contract PassToken is ERC721 {
 
   function getOccasion(uint256 _id) public view returns (Occasion memory)  {
     return occasions[_id];
+  }
+
+  function getSeatsTaken(uint256 _id) public view returns (uint256[] memory) {
+    return seatsTaken[_id];
+  }
+
+  function withdraw() public onlyOwner {
+    (bool success, ) = owner.call{value: address(this).balance}("");
+    require(success);
   }
 
 }

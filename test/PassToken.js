@@ -64,4 +64,68 @@ describe("PassToken", () => {
     })
   })
 
+  describe("Minting", () => {
+    const ID = 1
+    const SEAT = 50
+    const AMOUNT = ethers.utils.parseUnits("1", "ether")
+
+    beforeEach(async () => {
+      const transaction = await passToken.connect(buyer).mint(ID, SEAT, { value: AMOUNT })
+      await transaction.wait()
+    })
+
+    it("Updates ticket count", async () => {
+      const occasion = await passToken.getOccasion(1)
+      expect(occasion.tickets).to.be.equal(OCCASION_MAX_TICKETS - 1);
+    })
+
+    it("Updates buying status", async () => {
+      const status = await passToken.hasBought(ID, buyer.address)
+      expect(status).to.be.equal(true)
+    })
+
+    it("Updates seat status", async () => {
+      const owner = await passToken.seatTaken(ID, SEAT)
+      expect(owner).to.equal(buyer.address)
+    })
+
+    it("Updates overall seating status", async () => {
+      const seats = await passToken.getSeatsTaken(ID)
+      expect(seats.length).to.equal(1)
+      expect(seats[0]).to.equal(SEAT)
+    })
+
+    it("Updates the contract balance", async () => {
+      const balance = await ethers.provider.getBalance(passToken.address)
+      expect(balance).to.be.equal(AMOUNT)
+    })
+  })
+
+  describe('Withdrawing', () => {
+    const ID = 1
+    const SEAT = 50
+    const AMOUNT = ethers.utils.parseUnits("1", "ether")
+    let balanceBefore
+
+    beforeEach(async () => {
+      balanceBefore = await ethers.provider.getBalance(owner.address)
+
+      let transaction = await passToken.connect(buyer).mint(ID, SEAT, { value: AMOUNT });
+      await transaction.wait()
+
+      transaction = await passToken.connect(owner).withdraw()
+      await transaction.wait()
+    })
+
+    it("Updates the owner balance", async () => {
+      const balanceAfter = await ethers.provider.getBalance(owner.address)
+      expect(balanceAfter).to.be.greaterThan(balanceBefore)
+    })
+
+    it("Updates the contract balance", async () => {
+      const balance = await ethers.provider.getBalance(passToken.address)
+      expect(balance).to.equal(0)
+    })
+  })
+
 })

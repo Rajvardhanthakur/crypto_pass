@@ -1,4 +1,5 @@
 import React, { useContext } from 'react'
+import Card from '../components/Card';
 import Navbar from '../components/Navbar';
 import { Web3Context } from '../context/Web3Context'
 
@@ -11,6 +12,13 @@ function Home() {
         <Navbar />
         <h2 className='header_title'><strong>Event</strong> Tickets</h2>
       </header>
+      <div className='cards'>
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+      </div>
     </div>
   )
 }

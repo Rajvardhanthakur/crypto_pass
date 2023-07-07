@@ -138,3 +138,117 @@ nav {
 .nav_connect:hover {
   background-color: var(--clr-dark-saffron);
 }
+
+/* --------------------- Cards Css ------------------------ */
+
+.card {
+  align-items: center;
+  width: 95%;
+  max-width: 850px;
+  height: 75px;
+  margin: 25px auto;
+  position: relative;
+  transition: all 250ms ease;
+}
+
+.card_info {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  height: 100%;
+  padding: 10px;
+  text-align: left;
+  transition: 250ms ease all
+}
+
+.card_info:hover {
+  background: rgba(18, 90, 198, 0.2);
+}
+
+.card_info p small span {
+  font-weight: 700;
+}
+
+.card_info p small {
+  font-size: clamp(0.80rem, 2vw, 0.90rem);
+}
+
+.card_date {
+  grid-column: 1 / span 2;
+  grid-row: 1 / span 2;
+  place-self: center;
+  font-size: clamp(0.95rem, 3vw, 1.15rem);
+  font-weight: 300;
+}
+
+.card_name {
+  grid-column: 3 / span 6;
+  grid-row: 1;
+  place-self: center;
+  align-self: end;
+  font-family: "Open Sans";
+  font-size: clamp(0.90rem, 3vw, 1.10rem);
+  font-weight: 600;
+  text-align: center;
+}
+
+.card_location {
+  grid-column: 3 / span 6;
+  grid-row: 2;
+  place-self: center;
+  align-self: start;
+  font-size: 1.15rem;
+  font-weight: 300;
+  text-align: center;
+}
+
+.card_cost {
+  grid-column: 9 / span 1;
+  grid-row: 1 / span 2;
+  place-self: center;
+  font-size: clamp(1rem, 3vw, 1.10rem);
+  font-weight: 300;
+}
+
+.card_cost strong {
+  font-family: "Open Sans";
+  font-size: clamp(1.10rem, 3vw, 1.50rem);
+  font-weight: 700;
+  margin: 0;
+}
+
+.card_button,
+.car_button_out {
+  grid-column: 10 / span 3;
+  grid-row: 1 / span 2;
+  place-self: center;
+  width: 125px;
+  height: 40px;
+
+  background-color: var(--clr-light-saffron);
+  color: var(--clr-white);
+
+  margin-left: auto;
+  border: none;
+  border-radius: 4px;
+  font-family: "Open Sans";
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 250ms ease;
+}
+
+.card_button:hover {
+  background-color: var(--clr-dark-saffron);
+}
+
+.card_button:hover .card_button {
+  border-color: var(--clr-grey-2);
+}
+
+.card_button_out {
+  background-color: #BA1840;
+}
+
+.card hr {
+  margin-top: 15px;
+}

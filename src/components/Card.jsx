@@ -1,6 +1,9 @@
 import React from 'react'
 
-const Card = () => {
+const Card = ({ seatChartToggle, setSeatChartToggle }) => {
+  const handleClick = (e) => {
+    setSeatChartToggle(true)
+  }
   return (
     <div className='card'>
       <div className='card_info'>
@@ -25,7 +28,7 @@ const Card = () => {
         <button
           type='button'
           className='card_button'
-          onClick={() => console.log("clicked")}
+          onClick={(e) => handleClick(e)}
         >
           View Seats
         </button>

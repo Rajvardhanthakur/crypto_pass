@@ -1,6 +1,14 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { Web3Context } from '../context/Web3Context'
+import { shortenAddress } from '../utils/shortenAddress';
 
 const Navbar = () => {
+  const { connectedAccount, connectWallet } = useContext(Web3Context);
+  const handleConnect = (e) => {
+    if (!connectedAccount) {
+      connectWallet()
+    }
+  }
   return (
     <nav>
       <div className='nav_brand'>
@@ -19,9 +27,9 @@ const Navbar = () => {
       <button
         type='button'
         className='nav_connect'
-        onClick={() => console.log("Click connect...")}
+        onClick={handleConnect}
       >
-        0xf698...e43s
+        {connectedAccount ? shortenAddress(connectedAccount) : "Connect"}
       </button>
     </nav>
   )

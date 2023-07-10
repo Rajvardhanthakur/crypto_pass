@@ -7,7 +7,6 @@ import { Web3Context } from '../context/Web3Context'
 function Home() {
   const web3Context = useContext(Web3Context);
   const [seatChartToggle, setSeatChartToggle] = useState(false)
-  console.log("Web3 context :- ", web3Context)
   return (
     <div>
       <header>

@@ -218,7 +218,7 @@ nav {
 }
 
 .card_button,
-.car_button_out {
+.card_button_out {
   grid-column: 10 / span 3;
   grid-row: 1 / span 2;
   place-self: center;
@@ -351,7 +351,8 @@ nav {
   grid-row: 3 / span 10;
 }
 
-.occasion_seats {
+.occasion_seats,
+.occasion_seats_taken {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -371,4 +372,8 @@ nav {
   color: var(--clr-black);
   font-size: 1em;
   font-weight: 700;
+}
+
+.occasion_seats_taken {
+  background-color: rgba(34, 64, 109, 0.7);
 }

@@ -1,8 +1,27 @@
-import React from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Close from "../assets/close.svg"
+import { Web3Context } from '../context/Web3Context'
 import Seat from './Seat'
 
-const SeatChart = ({ setSeatChartToggle }) => {
+const SeatChart = ({ occasion, setSeatChartToggle }) => {
+  const [seatsTaken, setSeatsTaken] = useState(false)
+  const [hasSold, setHasSold] = useState(false)
+  const { getSeatsTaken, handleBuy } = useContext(Web3Context)
+
+  const handleSeatsTaken = async () => {
+    const seatsTaken = await getSeatsTaken();
+    setSeatsTaken(seatsTaken)
+  }
+
+  const buyHandler = async (seat) => {
+    setHasSold(false)
+    await handleBuy(seat)
+    setHasSold(true)
+  }
+
+  useEffect(() => {
+    handleSeatsTaken()
+  }, [hasSold])
   return (
     <div className='occasion'>
       <div className='occasion_seating'>
@@ -20,7 +39,7 @@ const SeatChart = ({ setSeatChartToggle }) => {
         </div>
 
         {
-          Array(25).fill(1).map((e, i) =>
+          seatsTaken && Array(25).fill(1).map((e, i) =>
             <Seat
               i={i}
               step={1}
@@ -28,8 +47,8 @@ const SeatChart = ({ setSeatChartToggle }) => {
               maxColumns={5}
               rowStart={2}
               maxRows={5}
-              seatsTaken={false}
-              buyHandler={() => console.log("Buy handler clicked")}
+              seatsTaken={seatsTaken}
+              buyHandler={buyHandler}
               key={i}
             />
           )
@@ -40,7 +59,7 @@ const SeatChart = ({ setSeatChartToggle }) => {
         </div>
 
         {
-          Array(75).fill(1).map((e, i) =>
+          seatsTaken && Array(Number(occasion.maxTickets) - 50).fill(1).map((e, i) =>
             <Seat
               i={i}
               step={26}
@@ -48,8 +67,8 @@ const SeatChart = ({ setSeatChartToggle }) => {
               maxColumns={15}
               rowStart={2}
               maxRows={15}
-              seatsTaken={false}
-              buyHandler={() => console.log("Buy handler clicked")}
+              seatsTaken={seatsTaken}
+              buyHandler={buyHandler}
               key={i}
             />
           )
@@ -60,16 +79,16 @@ const SeatChart = ({ setSeatChartToggle }) => {
         </div>
 
         {
-          Array(25).fill(1).map((e, i) =>
+          seatsTaken && Array(25).fill(1).map((e, i) =>
             <Seat
               i={i}
-              step={101}
+              step={(Number(occasion.maxTickets) - 24)}
               columnStart={22}
               maxColumns={5}
               rowStart={2}
               maxRows={5}
-              seatsTaken={false}
-              buyHandler={() => console.log("Buy handler clicked")}
+              seatsTaken={seatsTaken}
+              buyHandler={buyHandler}
               key={i}
             />
           )
